@@ -1,4 +1,4 @@
-import { getAll } from '../models/usuario.model';
+import { getAll, newUser, userExist } from '../models/usuario.model';
 
 const allUsers = async () => {
   const users = await getAll();
@@ -6,6 +6,15 @@ const allUsers = async () => {
   return users;
 };
 
+const create = async ({ email, senha }) => {
+  const userExisted = await userExist({ email });
+
+  if (userExisted) return userExisted;
+
+  const user = await newUser({ email, senha });
+  return user;
+};
+
 const none = async () => null;
 
-export { allUsers, none };
+export { allUsers, none, create };

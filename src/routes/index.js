@@ -1,4 +1,6 @@
 import { Router } from 'express';
+import { requestLogin } from '../models/usuario.model';
+import verifyToken from '../middleware/usuarios.middleware';
 import {
   getAll, createUser, deleteUser, updateUser,
 } from '../controllers/usuario.controller';
@@ -9,12 +11,14 @@ routes.get('/', (req, res) => {
   res.status(200).json({ ok: 'conected' });
 });
 
-routes.get('/usuario', getAll);
+routes.get('/usuario', verifyToken, getAll);
 
-routes.post('/usuario', createUser);
+routes.get('/login', requestLogin);
 
-routes.delete('/usuario/:id', deleteUser);
+routes.post('/usuario', verifyToken, createUser);
 
-routes.put('/usuario/:id', updateUser);
+routes.delete('/usuario/:id', verifyToken, deleteUser);
+
+routes.put('/usuario/:id', verifyToken, updateUser);
 
 export default routes;
